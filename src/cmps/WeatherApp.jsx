@@ -4,16 +4,18 @@ import Cities from './Cities.jsx';
 import Weather from './Weather.jsx';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { addFav, removeFav } from './../store/action/favActions';
+import { addFav, removeFav } from '../store/action/favActions';
 import { connect } from 'react-redux'
 
-export class _TaskApp extends Component {
+export class _WeatherApp extends Component {
     state = {
         cityWeather: {},
         cities: [],
         currCityId: "",
         isFav: false,
-        curCityname: ''
+        curCityname: '',
+        celcious: true,
+
     }
 
     componentDidMount() {
@@ -25,12 +27,12 @@ export class _TaskApp extends Component {
 
     loadCity = async (Id, name = "TLV") => {
         const cityWeather = await taskService.getForecast(Id)
-
+        console.log(cityWeather);
         // let favoriteCities = this.state.favoriteCities
         const { favs } = this.props
         let isFav = favs.includes(Id)
 
-        await this.setState({ cityWeather, currCityId: Id, isFav: isFav, curCityname: name })
+        await this.setState({ ...this.state, cities: [], cityWeather, currCityId: Id, isFav: isFav, curCityname: name })
         // this.setState({ currCityId: id })
     }
 
@@ -49,19 +51,23 @@ export class _TaskApp extends Component {
         }
         else this.props.addFav(Id)
 
-        this.setState({ isFav: !this.state.isFav })
+        this.setState({ ...this.state, isFav: !this.state.isFav })
 
+
+    }
+    changFormat = () => {
+        this.setState({ ...this.state, celcious: !this.state.celcious })
 
     }
 
 
     render() {
-        const { cities, cityWeather, currCityId, isFav, curCityname } = this.state
+        const { cities, cityWeather, currCityId, isFav, curCityname, celcious } = this.state
         if (!cityWeather) return <label>load</label>
 
         return (
-            <div >
-
+            <div  >
+                <button className="format" onClick={this.changFormat}>	&#8457; / 	&#8451;</button>
                 <div className="flex column align-center">
 
                     <label htmlFor="title" className=""> <input type="text" placeholder="Search" className="title" name="title" onChange={this.handleChange}></input></label>
@@ -70,7 +76,7 @@ export class _TaskApp extends Component {
                 <h1>{curCityname}</h1>
                 {!isFav && <FavoriteBorderIcon onClick={() => this.toggleFavorite(currCityId)} />}
                 {isFav && < FavoriteIcon onClick={() => this.toggleFavorite(currCityId)} />}
-                <ul className="card-grid "> <Weather cityWeather={cityWeather} /></ul>
+                <ul className="card-grid "> <Weather cityWeather={cityWeather} celcious={celcious} /></ul>
             </div>
         )
     }
@@ -87,4 +93,4 @@ const mapDispatchToProps = {
 }
 
 
-export const TaskApp = connect(mapStateToProps, mapDispatchToProps)(_TaskApp);
+export const WeatherApp = connect(mapStateToProps, mapDispatchToProps)(_WeatherApp);

@@ -4,7 +4,6 @@
     user-select: none;
 }
 #root {
-    min-height: 100vh;
 }
 
 ::selection {
@@ -27,9 +26,9 @@ b {
 
 body {
     font-size: rem(18px);
-    margin: 0 auto;
+    margin: 0;
     background-image: linear-gradient(180deg, rgb(12, 122, 247), rgba(255, 191, 95, 0.849));
-
+    min-height: 100vh;
     padding-top: 75px;
 }
 .main-layout {
@@ -108,8 +107,8 @@ header {
 }
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    margin: auto 0;
     grid-gap: 1px;
 }
 
@@ -123,7 +122,14 @@ svg {
 }
 
 .cities {
-    background-color: rgba(255, 255, 255, 0.623);
+    background-color: rgba(255, 255, 255, 1);
     padding: 20px;
-    margin-top: 0;
+    margin-top: 80px;
+    position: absolute;
+}
+.format {
+    position: sticky;
+    top: 23px;
+    right: 180px;
+    z-index: 100;
 }

@@ -29,10 +29,10 @@ export class _FavoriteList extends Component {
         var { favList } = this.state
         if (favList.length < 1) return null
         const search = favList.map((city, index) => {
-            return <li className="flex align-center" key={city.Key + city.LocalizedName} >{city.LocalizedName},
+            return <li className="flex justify-center" key={city.Key + city.LocalizedName} >{city.LocalizedName},
              {city.Country.LocalizedName}</li>
         })
-        return search
+        return <div>{search}</div>
 
     }
 }
