@@ -19,11 +19,18 @@ export class _WeatherApp extends Component {
     }
 
     componentDidMount() {
-        let id = "215854"
-        this.loadCity(id)
+        navigator.geolocation.getCurrentPosition(this.log)
+
 
 
     }
+    log = async (w) => {
+        console.log(w);
+        let id = await taskService.getCityByCoords(w)
+        console.log(id);
+        this.loadCity(id)
+    }
+
 
     loadCity = async (Id, name = "TLV") => {
         const cityWeather = await taskService.getForecast(Id)
@@ -73,9 +80,9 @@ export class _WeatherApp extends Component {
                     <label htmlFor="title" className=""> <input type="text" placeholder="Search" className="title" name="title" onChange={this.handleChange}></input></label>
                     {cities.length > 0 && <ul className="cities"> <Cities cities={cities} loadCity={this.loadCity} /></ul>}
                 </div>
-                <h1>{curCityname}</h1>
-                {!isFav && <FavoriteBorderIcon onClick={() => this.toggleFavorite(currCityId)} />}
-                {isFav && < FavoriteIcon onClick={() => this.toggleFavorite(currCityId)} />}
+                <div className="flex column align-center">  <h1>{curCityname}</h1>
+                    {!isFav && <FavoriteBorderIcon onClick={() => this.toggleFavorite(currCityId)} />}
+                    {isFav && < FavoriteIcon onClick={() => this.toggleFavorite(currCityId)} />}</div>
                 <ul className="card-grid "> <Weather cityWeather={cityWeather} celcious={celcious} /></ul>
             </div>
         )

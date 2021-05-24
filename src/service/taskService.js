@@ -5,7 +5,8 @@ import { StorageService } from './StorageService';
 export const taskService = {
     getCities,
     getCitiesByID,
-    getForecast
+    getForecast,
+    getCityByCoords
 }
 
 window.taskService = taskService
@@ -55,4 +56,17 @@ async function getForecast(key) {
         return StorageService.load('forecast')
     }
 
+}
+
+async function getCityByCoords(loc) {
+    console.log(loc);
+    const { latitude, longitude } = loc.coords
+    console.log(latitude, longitude);
+    try {
+        const city = await axios.get(`https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=a6G5iYMGG7hF7iiEnGgh41oa4pANsd46&q=${latitude},${longitude}`)
+        return city.data.Key;
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
 }
